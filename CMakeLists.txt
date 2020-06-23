@@ -17,3 +17,5 @@ add_library(joe2 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.c
 add_library(joe3 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp> )
 target_link_libraries(joe2 INTERFACE joe1)
 target_link_libraries(joe3 INTERFACE joe2)
+#add_dependencies(joe2 joe1)
+#add_dependencies(joe3 joe2)
