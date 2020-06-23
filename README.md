@@ -54,3 +54,5 @@ file outputted
 file outputted
 file outputted
 ```
+
+This matters in practice because having a script run three times concurrently to generate a single output file is likely to produce garbage.
