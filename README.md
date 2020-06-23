@@ -37,7 +37,7 @@ target_link_libraries(joe2 INTERFACE joe1)
 target_link_libraries(joe3 INTERFACE joe2)
 ```
 
-The result? The add_custom_command gets called three times. That is, even though joe3 appears to depends on joe2 which itself appears depends on joe1, the joe2 and joe3 targets will still call the add_custom_command to generate the file they need.
+The result? The add_custom_command gets called three times. That is, even though joe3 appears to depends on joe2 which itself appears depends on joe1, the joe2 and joe3 targets will still call the add_custom_command to generate the file they need. (Note the 'INTERFACE' keyword and my use of the verb "appears".)
 
 ```
  cmake .. && make -j4
