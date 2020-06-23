@@ -88,3 +88,5 @@ add_dependencies(joe3 joe2)
 ```
 
 Then you know for sure that joe2 won't start to build before joe1 is done. And so forth.
+
+Or you can replace the 'INTERFACE' keyword by 'PUBLIC' or 'PRIVATE'.
