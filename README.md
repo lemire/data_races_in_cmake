@@ -1,7 +1,14 @@
 # Fun data races in CMake
 
-Usage:
+Executive summary
+----------------
 
+Custom commands in CMake are NOT targets, they are just that: commands that trigger when you ask for the files in them. They may run multiple times, and are intended to do so, recalculating whatever they do each time. If it isn't thread safe, you must synchronize it using actual targets. And interface libraries are not actual targets.
+
+
+
+Usage:
+-----
 
 ```
 git clone https://github.com/lemire/data_races_in_cmake.git
@@ -12,7 +19,8 @@ cmake ..
 make -j4
 ```
 
-Explanation:
+Analysis:
+-----
 
 In CMake, the add_custom_command instructions are not thread safe. If more than one target depends on the result of the command, you may get serious problems.
 
@@ -27,17 +35,15 @@ add_custom_command(
 
 This command just calls a script and tries to create a new file textfile.cpp.
 
-We can create three targets that depend on each other and that depend all on the `add_custom_command`:
+We can create three targets that depend all on the `add_custom_command`:
 
 ```
 add_library(joe1 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp> )
 add_library(joe2 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp> )
 add_library(joe3 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp> )
-target_link_libraries(joe2 INTERFACE joe1)
-target_link_libraries(joe3 INTERFACE joe2)
 ```
 
-The result? The add_custom_command gets called three times. That is, even though joe3 appears to depends on joe2 which itself appears depends on joe1, the joe2 and joe3 targets will still call the add_custom_command to generate the file they need. (Note the 'INTERFACE' keyword and my use of the verb "appears".)
+The result? The add_custom_command gets called three times. 
 
 ```
  cmake .. && make -j4
@@ -88,5 +94,3 @@ add_dependencies(joe3 joe2)
 ```
 
 Then you know for sure that joe2 won't start to build before joe1 is done. And so forth.
-
-Or you can replace the 'INTERFACE' keyword by 'PUBLIC' or 'PRIVATE'.
