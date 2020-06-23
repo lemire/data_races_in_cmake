@@ -58,3 +58,14 @@ You need to state your dependencies explicitly...
 add_dependencies(joe2 joe1)
 add_dependencies(joe3 joe2)
 ```
+
+
+You may think that you can just patch it up by introducing an earlier custom target...
+
+```
+
+add_custom_target(fake DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp)
+add_dependencies(joe1 fake)
+```
+
+But it will not help.
