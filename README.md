@@ -53,11 +53,6 @@ file outputted
 ```
 
 
-You need to state your dependencies explicitly...
-```
-add_dependencies(joe2 joe1)
-add_dependencies(joe3 joe2)
-```
 
 
 You may think that you can just patch it up by introducing an earlier custom target...
@@ -69,3 +64,12 @@ add_dependencies(joe1 fake)
 ```
 
 But it will not help.
+
+
+## Proper fix
+
+You need to state your dependencies explicitly...
+```
+add_dependencies(joe2 joe1)
+add_dependencies(joe3 joe2)
+```
