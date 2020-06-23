@@ -1,7 +1,20 @@
 # Fun data races in CMake
 
+Usage:
 
-In CMake, the add_custom_command instructions are not thread safe.
+
+```
+git clone https://github.com/lemire/data_races_in_cmake.git
+cd data_races_in_cmake/
+mkdir build
+cd build/
+cmake ..
+make -j4
+```
+
+Explanation:
+
+In CMake, the add_custom_command instructions are not thread safe. If more than one target depends on the result of the command, you may get serious problems.
 
 Let us consider an example:
 
