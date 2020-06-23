@@ -73,3 +73,5 @@ You need to state your dependencies explicitly...
 add_dependencies(joe2 joe1)
 add_dependencies(joe3 joe2)
 ```
+
+Then you know for sure that joe2 won't start to build before joe1 is done. And so forth.
