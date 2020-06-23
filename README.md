@@ -20,11 +20,8 @@ We can create three targets that depend on each other and that depend all on the
 add_library(joe1 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp> )
 add_library(joe2 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp> )
 add_library(joe3 STATIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/textfile.cpp> )
-target_link_libraries(joe2 PUBLIC joe1)
-add_dependencies(joe2 joe1)
-target_link_libraries(joe3 PUBLIC joe2)
-add_dependencies(joe3 joe2)
-
+target_link_libraries(joe2 INTERFACE joe1)
+target_link_libraries(joe3 INTERFACE joe2)
 ```
 
 The result? The add_custom_command gets called three times. That is, even though joe3 appears to depends on joe2 which itself appears depends on joe1, the joe2 and joe3 targets will still call the add_custom_command to generate the file they need.
@@ -55,4 +52,9 @@ file outputted
 file outputted
 ```
 
-This matters in practice because having a script run three times concurrently to generate a single output file is likely to produce garbage.
+
+You need to state your dependencies explicitly...
+```
+add_dependencies(joe2 joe1)
+add_dependencies(joe3 joe2)
+```
